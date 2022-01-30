@@ -52,7 +52,7 @@ class CovidCasesDataPurifier(CovidDataPurifier):
 def main():
 
     purifier = CovidCasesDataPurifier()
-    purifier.load_source_data('data/test_data.csv')
+    purifier.load_source_data('samples/test-data-cases.csv')
     purifier.purify_data()
     purifier.print_output_csv()
 

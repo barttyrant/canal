@@ -58,7 +58,7 @@ class CovidDeathsDataPurifier(CovidDataPurifier):
 def main():
 
     purifier = CovidDeathsDataPurifier()
-    purifier.load_source_data("data/zgony-test-data.csv")
+    purifier.load_source_data("samples/test-data-deaths.csv")
     purifier.purify_data()
     purifier.print_output_csv()
 
