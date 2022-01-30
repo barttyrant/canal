@@ -21,7 +21,7 @@ class CovidDeathsDataPurifier(CovidDataPurifier):
                     'regB',
                     'sex',
                     'age',
-                    # 'age_cat',
+                    'age_cat',
                     'other_illnesses',
                     'producer',
                     'doses',
@@ -29,7 +29,7 @@ class CovidDeathsDataPurifier(CovidDataPurifier):
                     #'reporting_cnt'
                 ]
             else:
-                # normal_row
+                # ordinary row
 
                 record_output = [
                     self._purify_date(record[0]),
@@ -37,7 +37,7 @@ class CovidDeathsDataPurifier(CovidDataPurifier):
                     self._purify_regB(record[2]),
                     self._purify_sex(record[3]),
                     self._purify_age(record[4]),
-                    # self._purify_ageCat(record[5]),
+                    self._purify_ageCat(record[5]),
                     self._purify_otherIllnesses(record[6]),
                     self._purify_producer(record[7]),
                     self._purify_doses(record[8]),

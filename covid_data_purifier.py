@@ -96,10 +96,16 @@ class CovidDataPurifier():
         return output
 
     def _purify_age(self, param):
-        return param
+        if(len(param) > 0):
+            return param
+        else:
+            return "n/a"
 
     def _purify_ageCat(self, param):
-        return param
+        if(len(param) > 0 and param != "BD"):
+            return param
+        else:
+            return "n/a"
 
     def _purify_producer(self, param):
 
