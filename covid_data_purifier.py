@@ -7,6 +7,26 @@ class CovidDataPurifier():
     _source_data = None
     _purified_data = None
 
+    _regionBMap = None
+    _regionAMap = {
+        "02": "Dolnośląskie",
+        "04": "Kujawsko-pomorskie",
+        "06": "Lubelskie",
+        "08": "Lubuskie",
+        "10": "Łódzkie",
+        "12": "Małopolskie",
+        "14": "Mazowieckie",
+        "16": "Opolskie",
+        "18": "Podkarpackie",
+        "20": "Podlaskie",
+        "22": "Pomorskie",
+        "24": "Śląskie",
+        "26": "Świętokrzyskie",
+        "28": "Warmińsko-mazurskie",
+        "30": "Wielkopolskie",
+        "32": "Zachodniopomorskie"
+    }
+
     def load_source_data(self, filepath):
         with_headers = 1
 
@@ -46,40 +66,43 @@ class CovidDataPurifier():
         print(final_str)
         return final_str
 
-
     def _purify_date(self, param):
         return param
 
     def _purify_regA(self, param):
 
-        regionA_map = {
-            "02": "Dolnośląskie",
-            "04": "Kujawsko-pomorskie",
-            "06": "Lubelskie",
-            "08": "Lubuskie",
-            "10": "Łódzkie",
-            "12": "Małopolskie",
-            "14": "Mazowieckie",
-            "16": "Opolskie",
-            "18": "Podkarpackie",
-            "20": "Podlaskie",
-            "22": "Pomorskie",
-            "24": "Śląskie",
-            "26": "Świętokrzyskie",
-            "28": "Warmińsko-mazurskie",
-            "30": "Wielkopolskie",
-            "32": "Zachodniopomorskie"
-        }
-
         output = ""
 
-        if param in regionA_map.keys():
-            output = regionA_map[param]
+        if param in self._regionAMap.keys():
+            output = self._regionAMap[param]
 
         return output
 
     def _purify_regB(self, param):
-        return param + 'B'
+        if(self._regionBMap is None):
+            # if regions map not loaded, load it now!
+
+            filepath = 'samples/wszystkie-powiaty.csv'
+            d = {}
+
+            with open(filepath) as csv_file:
+                csv_reader = csv.reader(
+                    csv_file, delimiter=";", dialect="excel")
+                line_count = 0
+
+                for row in csv_reader:
+                    if line_count == 0:
+                        line_count = line_count+1
+                        continue
+                    else:
+                        d[row[0] + row[1]] = row[4] + " (" + self._regionAMap[row[0]] + ") - " + row[0] + row[1]
+                        line_count += 1
+            self._regionBMap = d
+
+        if param in self._regionBMap.keys():
+            return self._regionBMap[param]
+
+        return "n/a"
 
     def _purify_sex(self, param):
         sex_map = {
